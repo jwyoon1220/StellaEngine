@@ -1,6 +1,7 @@
-package io.github.jwyoon1220.stellaengine.test;
+package io.github.github.jwyoon1220.stellaengine.test;
 
-import io.github.jwyoon1220.stellaengine.*;
+import io.github.github.jwyoon1220.stellaengine.*;
+import io.github.github.jwyoon1220.stellaengine.entity.Model;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
@@ -10,16 +11,28 @@ public class TestGame implements Logic {
     private float color = 0f;
 
     private final RenderManager renderer;
+    private final ObjectLoader loader;
     private final WindowManager window;
 
+    private Model model;
     public TestGame() {
         renderer = new RenderManager();
         window = Launcher.wm();
+        loader = new ObjectLoader();
     }
 
     @Override
     public void init() throws Exception {
         renderer.init();
+        float[] vertices = {
+                -0.5f, 0.5f, 0f,
+                -0.5f, -0.5f, 0f,
+                0.5f, -0.5f, 0f,
+                0.5f, -0.5f, 0f,
+                0.5f, 0.5f, 0f,
+                -0.5f, 0.5f, 0f
+        };
+        model = loader.loadModel(vertices);
     }
 
     @Override
@@ -50,11 +63,12 @@ public class TestGame implements Logic {
             window.setResize(true);
         }
         window.setClearColor(color, color, color, 0f);
-        renderer.clear();
+        renderer.render(model);
     }
 
     @Override
     public void dispose() {
         renderer.dispose();
+        loader.dispose();
     }
 }

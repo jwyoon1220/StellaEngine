@@ -1,4 +1,4 @@
-package io.github.jwyoon1220.stellaengine;
+package io.github.github.jwyoon1220.stellaengine;
 
 import org.joml.Matrix4f;
 import org.lwjgl.glfw.*;

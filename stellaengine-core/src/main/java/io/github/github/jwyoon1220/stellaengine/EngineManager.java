@@ -1,6 +1,6 @@
-package io.github.jwyoon1220.stellaengine;
+package io.github.github.jwyoon1220.stellaengine;
 
-import io.github.jwyoon1220.stellaengine.test.TestGame;
+import io.github.github.jwyoon1220.stellaengine.utils.Const;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
 
