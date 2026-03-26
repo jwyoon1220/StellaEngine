@@ -11,11 +11,10 @@ public class Launcher {
     private static WindowManager wm;
     private static TestGame game;
 
-
     public static void main(String[] args) {
         Logger logger = LoggerFactory.getLogger(Launcher.class);
         logger.info("Hello LWJGL {}!", Version.getVersion());
-        wm = new  WindowManager(Const.TITLE, Const.WIDTH, Const.HEIGHT, false);
+        wm = new WindowManager(Const.TITLE, Const.WIDTH, Const.HEIGHT, false);
         game = new TestGame();
 
         EngineManager engine = new EngineManager();
@@ -31,9 +30,6 @@ public class Launcher {
     }
 
     public static WindowManager getWindowManager() {
-        return wm;
-    }
-    public static WindowManager wm() {
         return wm;
     }
 }

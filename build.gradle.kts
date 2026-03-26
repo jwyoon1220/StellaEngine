@@ -1,4 +1,5 @@
 plugins {
+    java
     kotlin("jvm") version "2.3.10"
     kotlin("plugin.serialization") version "2.3.0"
 }
@@ -120,6 +121,20 @@ dependencies {
 
 kotlin {
     jvmToolchain(21)
+}
+sourceSets {
+    main {
+        resources {
+            srcDir("src/main/resources")
+        }
+    }
+}
+tasks.withType<ProcessResources> {
+    // 중복 파일 발견 시 첫 번째 파일을 선택하고 나머지는 무시함
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    // 또는 마지막 파일로 덮어쓰고 싶다면 아래 설정 사용
+    // duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
 
 tasks.test {
