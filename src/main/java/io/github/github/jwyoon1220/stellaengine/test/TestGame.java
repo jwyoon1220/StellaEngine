@@ -2,6 +2,7 @@ package io.github.github.jwyoon1220.stellaengine.test;
 
 import io.github.github.jwyoon1220.stellaengine.*;
 import io.github.github.jwyoon1220.stellaengine.entity.Model;
+import io.github.github.jwyoon1220.stellaengine.entity.Texture;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
@@ -25,18 +26,25 @@ public class TestGame implements Logic {
     public void init() throws Exception {
         renderer.init();
         float[] vertices = {
-                -0.5f, 0.5f, 0f,
+                -0.5f,  0.5f, 0f,
                 -0.5f, -0.5f, 0f,
                 0.5f, -0.5f, 0f,
-                0.5f, -0.5f, 0f,
-                0.5f, 0.5f, 0f,
-                -0.5f, 0.5f, 0f
+                0.5f,  0.5f, 0f,
         };
+
         int[] indices = {
             0, 1, 3,
             3, 1, 2
         };
-        model = loader.loadModel(vertices, indices);
+        float[] textureCoords = {
+                0f, 0f,
+                0f, 1f,
+                1f, 1f,
+                1f, 0f
+        };
+
+        model = loader.loadModel(vertices, textureCoords, indices);
+        model.setTexture(new Texture(loader.loadTexture("texture/grass.jpg")));
     }
 
     @Override

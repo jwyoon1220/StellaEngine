@@ -1,6 +1,8 @@
 package io.github.jwyoon1220.stellaengine
 
+import org.joml.Matrix4f
 import org.lwjgl.opengl.GL20
+import org.lwjgl.system.MemoryStack
 import org.lwjgl.system.MemoryUtil
 import kotlin.jvm.Throws
 
@@ -9,9 +11,31 @@ class ShaderManager {
     private var vertexShaderId: Int = 0
     private var fragmentShaderId: Int = 0
 
+    private val uniforms: HashMap<String, Int> = HashMap()
+
     init {
         if (programId == 0) {
             throw RuntimeException("Could not create Shader")
+        }
+    }
+
+    @Throws(RuntimeException::class)
+    fun createUniform(name: String) {
+        val unifromLocation = GL20.glGetUniformLocation(programId, name)
+        if (unifromLocation < 0) {
+            throw RuntimeException("Could not find uniform: $name")
+        }
+        uniforms[name] = unifromLocation
+    }
+
+    fun setUniform(uniformName: String, value: Matrix4f) {
+        MemoryStack.stackPush().use { stack ->
+            GL20.glUniformMatrix4fv(uniforms[uniformName] ?: throw RuntimeException("null"), false, value.get(stack.mallocFloat(16)))
+        }
+    }
+    fun setUniform(uniformName: String, value: Int) {
+        MemoryStack.stackPush().use { stack ->
+            GL20.glUniform1i(uniforms[uniformName] ?: throw RuntimeException("null"), value)
         }
     }
 
