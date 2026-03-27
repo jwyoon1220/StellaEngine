@@ -1,4 +1,4 @@
-package io.github.github.jwyoon1220.stellaengine.utils;
+package io.github.jwyoon1220.stellaengine.utils;
 
 import org.lwjgl.system.MemoryUtil;
 

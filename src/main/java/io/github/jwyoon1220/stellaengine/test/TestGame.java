@@ -1,8 +1,10 @@
-package io.github.github.jwyoon1220.stellaengine.test;
+package io.github.jwyoon1220.stellaengine.test;
 
-import io.github.github.jwyoon1220.stellaengine.*;
-import io.github.github.jwyoon1220.stellaengine.entity.Model;
-import io.github.github.jwyoon1220.stellaengine.entity.Texture;
+import io.github.jwyoon1220.stellaengine.*;
+import io.github.jwyoon1220.stellaengine.entity.Entity;
+import io.github.jwyoon1220.stellaengine.entity.Model;
+import io.github.jwyoon1220.stellaengine.entity.Texture;
+import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
@@ -14,8 +16,7 @@ public class TestGame implements Logic {
     private final RenderManager renderer;
     private final ObjectLoader loader;
     private final WindowManager window;
-
-    private Model model;
+    private Entity entity;
     public TestGame() {
         renderer = new RenderManager();
         window = Launcher.getWindowManager();
@@ -43,8 +44,9 @@ public class TestGame implements Logic {
                 1f, 0f
         };
 
-        model = loader.loadModel(vertices, textureCoords, indices);
+        Model model = loader.loadModel(vertices, textureCoords, indices);
         model.setTexture(new Texture(loader.loadTexture("texture/grass.jpg")));
+        entity = new Entity(model, new Vector3f(1f, 0f, 0f), new Vector3f(0f, 0f, 0f), 1f);
     }
 
     @Override
@@ -66,6 +68,10 @@ public class TestGame implements Logic {
         } else if (color < 0f) {
             color = 0f;
         }
+        if (entity.getPos().x < -1.5f) {
+            entity.getPos().x = 1.5f;
+        }
+        entity.getPos().x -= 0.01f;
     }
 
     @Override
@@ -75,7 +81,7 @@ public class TestGame implements Logic {
             window.setResize(true);
         }
         window.setClearColor(color, color, color, 0f);
-        renderer.render(model);
+        renderer.render(entity);
     }
 
     @Override

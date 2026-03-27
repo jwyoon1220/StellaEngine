@@ -1,8 +1,8 @@
-package io.github.github.jwyoon1220.stellaengine;
+package io.github.jwyoon1220.stellaengine;
 
-import io.github.github.jwyoon1220.stellaengine.entity.Model;
-import io.github.github.jwyoon1220.stellaengine.utils.Utils;
-import io.github.jwyoon1220.stellaengine.ShaderManager;
+import io.github.jwyoon1220.stellaengine.entity.Entity;
+import io.github.jwyoon1220.stellaengine.utils.Transformation;
+import io.github.jwyoon1220.stellaengine.utils.Utils;
 import org.lwjgl.opengl.*;
 
 public class RenderManager {
@@ -19,19 +19,21 @@ public class RenderManager {
         shader.createFragmentShader(Utils.loadResource("/shaders/fragment.glsl"));
         shader.link();
         shader.createUniform("textureSampler");
+        shader.createUniform("transformationMatrix");
     }
 
-    public void render(Model model) {
+    public void render(Entity entity) {
         clear();
         shader.bind();
         shader.setUniform("textureSampler", 0);
-        GL30.glBindVertexArray(model.getId());
+        shader.setUniform("transformationMatrix", Transformation.createTransformationMatrix(entity));
+        GL30.glBindVertexArray(entity.getModel().getId());
         GL20.glEnableVertexAttribArray(0);
         GL20.glEnableVertexAttribArray(1);
         GL30.glActiveTexture(GL13.GL_TEXTURE0);
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, model.getTexture().getId());
-        GL11.glDrawElements(GL11.GL_TRIANGLES, model.getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
-        GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, model.getVertexCount());
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, entity.getModel().getTexture().getId());
+        GL11.glDrawElements(GL11.GL_TRIANGLES, entity.getModel().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
+        GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, entity.getModel().getVertexCount());
         GL20.glDisableVertexAttribArray(0);
         GL20.glDisableVertexAttribArray(1);
         GL30.glBindVertexArray(0);

@@ -1,6 +1,8 @@
 package io.github.jwyoon1220.stellaengine
 
 import org.joml.Matrix4f
+import org.joml.Vector3f
+import org.joml.Vector4f
 import org.lwjgl.opengl.GL20
 import org.lwjgl.system.MemoryStack
 import org.lwjgl.system.MemoryUtil
@@ -34,10 +36,26 @@ class ShaderManager {
         }
     }
     fun setUniform(uniformName: String, value: Int) {
-        MemoryStack.stackPush().use { stack ->
-            GL20.glUniform1i(uniforms[uniformName] ?: throw RuntimeException("null"), value)
-        }
+        GL20.glUniform1i(uniforms[uniformName] ?: throw RuntimeException("null"), value)
     }
+    fun setUniform(uniformName: String, value: Vector3f) {
+        GL20.glUniform3f(uniforms[uniformName] ?: throw RuntimeException("null"), value.x, value.y, value.z)
+    }
+    fun setUniform(uniformName: String, value: Vector4f) {
+        GL20.glUniform4f(uniforms[uniformName] ?: throw RuntimeException("null"), value.x, value.y, value.z, value.w)
+
+    }
+    fun setUniform(uniformName: String, value: Boolean) {
+        var res = 0f
+        if (value) {
+            res = 1f
+        }
+        GL20.glUniform1f(uniforms[uniformName] ?: throw RuntimeException("null"), res)
+    }
+    fun setUniform(uniformName: String, value: Float) {
+        GL20.glUniform1f(uniforms[uniformName] ?: throw RuntimeException("null"), value)
+    }
+
 
     @Throws(RuntimeException::class)
     fun createVertexShader(vertexSource: String) {

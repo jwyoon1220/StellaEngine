@@ -1,7 +1,7 @@
-package io.github.github.jwyoon1220.stellaengine;
+package io.github.jwyoon1220.stellaengine;
 
-import io.github.github.jwyoon1220.stellaengine.entity.Model;
-import io.github.github.jwyoon1220.stellaengine.utils.Utils;
+import io.github.jwyoon1220.stellaengine.entity.Model;
+import io.github.jwyoon1220.stellaengine.utils.Utils;
 import org.lwjgl.opengl.*;
 import org.lwjgl.stb.STBImage;
 import org.lwjgl.system.MemoryStack;
@@ -16,7 +16,7 @@ public class ObjectLoader {
     private List<Integer> vbos = new ArrayList<>();
     private List<Integer> textures = new ArrayList<>();
 
-    public Model loadModel(float[] vertices, float[] textureCoords,  int[] indices) {
+    public Model loadModel(float[] vertices, float[] textureCoords, int[] indices) {
         int id = createVAO();
         storeIndicesBuffer(indices);
         storeDataIntAttribList(0, 3, vertices);

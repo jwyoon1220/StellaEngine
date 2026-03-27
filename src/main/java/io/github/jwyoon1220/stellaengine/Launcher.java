@@ -1,7 +1,7 @@
-package io.github.github.jwyoon1220.stellaengine;
+package io.github.jwyoon1220.stellaengine;
 
-import io.github.github.jwyoon1220.stellaengine.test.TestGame;
-import io.github.github.jwyoon1220.stellaengine.utils.Const;
+import io.github.jwyoon1220.stellaengine.test.TestGame;
+import io.github.jwyoon1220.stellaengine.utils.Const;
 import org.lwjgl.Version;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
