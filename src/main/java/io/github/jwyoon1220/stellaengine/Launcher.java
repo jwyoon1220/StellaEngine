@@ -14,7 +14,7 @@ public class Launcher {
     public static void main(String[] args) {
         Logger logger = LoggerFactory.getLogger(Launcher.class);
         logger.info("Hello LWJGL {}!", Version.getVersion());
-        wm = new WindowManager(Const.TITLE, Const.WIDTH, Const.HEIGHT, false);
+        wm = new WindowManager(Const.TITLE, Const.WIDTH, Const.HEIGHT, true);
         game = new TestGame();
 
         EngineManager engine = new EngineManager();

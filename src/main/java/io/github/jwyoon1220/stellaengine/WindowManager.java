@@ -155,6 +155,9 @@ public class WindowManager {
         this.resize = resize;
     }
 
+    public long getHWnd() {
+        return window;
+    }
     public boolean isVSync() {
         return vSync;
     }

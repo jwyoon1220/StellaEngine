@@ -1,5 +1,7 @@
 package io.github.jwyoon1220.stellaengine
 
+import io.github.jwyoon1220.stellaengine.entity.Material
+import io.github.jwyoon1220.stellaengine.lighting.DirectionalLight
 import org.joml.Matrix4f
 import org.joml.Vector3f
 import org.joml.Vector4f
@@ -29,21 +31,49 @@ class ShaderManager {
         }
         uniforms[name] = unifromLocation
     }
+    @Throws(RuntimeException::class)
+    fun createMaterialUniform(uniformName: String) {
+        createUniform("$uniformName.ambient")
+        createUniform("$uniformName.diffuse")
+        createUniform("$uniformName.specular")
+        createUniform("$uniformName.hasTexture")
+        createUniform("$uniformName.reflectance")
+
+    }
+    // 예외 메시지를 상세하게 출력하는 공통 함수
+    private fun getUniformLocation(uniformName: String): Int {
+        return uniforms[uniformName]
+            ?: throw RuntimeException("Could not find uniform location for: [$uniformName]. Check if it's used in shader or misspelled.")
+    }
+
+    @Throws(RuntimeException::class)
+    fun createDirectionalLightUniform(uniformName: String) {
+        createUniform("$uniformName.color")
+        createUniform("$uniformName.direction")
+        createUniform("$uniformName.intensity")
+    }
 
     fun setUniform(uniformName: String, value: Matrix4f) {
         MemoryStack.stackPush().use { stack ->
-            GL20.glUniformMatrix4fv(uniforms[uniformName] ?: throw RuntimeException("null"), false, value.get(stack.mallocFloat(16)))
+            val location = getUniformLocation(uniformName)
+            GL20.glUniformMatrix4fv(location, false, value.get(stack.mallocFloat(16)))
         }
     }
-    fun setUniform(uniformName: String, value: Int) {
-        GL20.glUniform1i(uniforms[uniformName] ?: throw RuntimeException("null"), value)
-    }
-    fun setUniform(uniformName: String, value: Vector3f) {
-        GL20.glUniform3f(uniforms[uniformName] ?: throw RuntimeException("null"), value.x, value.y, value.z)
-    }
-    fun setUniform(uniformName: String, value: Vector4f) {
-        GL20.glUniform4f(uniforms[uniformName] ?: throw RuntimeException("null"), value.x, value.y, value.z, value.w)
 
+    fun setUniform(uniformName: String, value: Int) {
+        GL20.glUniform1i(getUniformLocation(uniformName), value)
+    }
+
+    fun setUniform(uniformName: String, value: Float) { // Float 버전도 있으면 좋음
+        GL20.glUniform1f(getUniformLocation(uniformName), value)
+    }
+
+    fun setUniform(uniformName: String, value: Vector3f) {
+        GL20.glUniform3f(getUniformLocation(uniformName), value.x, value.y, value.z)
+    }
+
+    fun setUniform(uniformName: String, value: Vector4f) {
+        GL20.glUniform4f(getUniformLocation(uniformName), value.x, value.y, value.z, value.w)
     }
     fun setUniform(uniformName: String, value: Boolean) {
         var res = 0f
@@ -52,8 +82,19 @@ class ShaderManager {
         }
         GL20.glUniform1f(uniforms[uniformName] ?: throw RuntimeException("null"), res)
     }
-    fun setUniform(uniformName: String, value: Float) {
-        GL20.glUniform1f(uniforms[uniformName] ?: throw RuntimeException("null"), value)
+
+    fun setUniform(uniformName: String, mat: Material) {
+        setUniform("$uniformName.ambient", mat.ambientColor)
+        setUniform("$uniformName.diffuse", mat.diffuseColor)
+        setUniform("$uniformName.specular", mat.specularColor)
+        setUniform("${uniformName}.hasTexture", if (mat.hasTexture()) 1 else 0)
+        setUniform("$uniformName.reflectance", mat.reflectance)
+
+    }
+    fun setUniform(uniformName: String, dirLight: DirectionalLight) {
+        setUniform("$uniformName.color", dirLight.color)
+        setUniform("$uniformName.direction", dirLight.direction)
+        setUniform("$uniformName.intensity", dirLight.intensity)
     }
 
 

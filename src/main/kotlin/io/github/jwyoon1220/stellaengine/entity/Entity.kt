@@ -3,7 +3,7 @@ package io.github.jwyoon1220.stellaengine.entity
 import org.joml.Vector3f
 
 data class Entity(
-    val model: Model?,
+    val model: Model,
     val pos: Vector3f,
     val rotation: Vector3f,
     val scale: Float
